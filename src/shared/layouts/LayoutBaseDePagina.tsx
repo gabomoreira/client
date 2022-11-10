@@ -4,9 +4,9 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import { useDrawerContext } from "../contexts";
+} from '@mui/material';
+import { Box } from '@mui/system';
+import { useDrawerContext } from '../contexts';
 
 interface ILayoutBaseDePaginaProps {
   title: string;
@@ -18,7 +18,7 @@ export const LayoutBaseDePagina: React.FC<ILayoutBaseDePaginaProps> = ({
   title,
 }) => {
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { toggleDrawerOpen } = useDrawerContext();
 

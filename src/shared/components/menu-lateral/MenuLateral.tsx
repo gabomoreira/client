@@ -9,11 +9,11 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import React, { useEffect } from "react";
-import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
-import { useDrawerContext } from "../../contexts";
+} from '@mui/material';
+import { Box } from '@mui/system';
+import React, { useEffect } from 'react';
+import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
+import { useDrawerContext } from '../../contexts';
 
 interface IMenuLateralProps {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ interface IMenuLateralProps {
 
 export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
 
@@ -62,7 +62,7 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
     <>
       <Drawer
         open={isDrawerOpen}
-        variant={mobile ? "temporary" : "permanent"}
+        variant={mobile ? 'temporary' : 'permanent'}
         onClose={toggleDrawerOpen}
       >
         <Box
