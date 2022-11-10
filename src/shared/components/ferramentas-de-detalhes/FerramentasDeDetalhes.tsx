@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Paper, useTheme } from '@mui/material';
+import { Box, Button, Icon, Paper, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 interface IFerramentasDeDetalhesProps {
   textoBotaoNovo?: string;
@@ -8,6 +8,12 @@ interface IFerramentasDeDetalhesProps {
   mostrarBotaoSalvar?: boolean;
   mostrarBotaoSalvarEVoltar?: boolean;
   mostrarBotaoApagar?: boolean;
+
+  mostrarBotaoNovoCarregando?: boolean;
+  mostrarBotaoVoltarCarregando?: boolean;
+  mostrarBotaoSalvarCarregando?: boolean;
+  mostrarBotaoSalvarEVoltarCarregando?: boolean;
+  mostrarBotaoApagarCarregando?: boolean;
 
   aoClicarEmNovo?: () => void;
   aoClicarEmVoltar?: () => void;
@@ -25,6 +31,12 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
   mostrarBotaoSalvarEVoltar = false,
   mostrarBotaoApagar = true,
 
+  mostrarBotaoNovoCarregando = false,
+  mostrarBotaoVoltarCarregando = false,
+  mostrarBotaoSalvarCarregando = false,
+  mostrarBotaoSalvarEVoltarCarregando = false,
+  mostrarBotaoApagarCarregando = false,
+
   aoClicarEmNovo,
   aoClicarEmVoltar,
   aoClicarEmSalvar,
@@ -32,6 +44,8 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
   aoClicarEmApagar,
 }) => {
   const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box
@@ -43,8 +57,9 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
       gap={1}
       alignItems="center"
       component={Paper}
+      overflow="hidden"
     >
-      {mostrarBotaoSalvar && (
+      {mostrarBotaoSalvar && !mostrarBotaoSalvarCarregando && (
         <Button
           color="primary"
           disableElevation
@@ -52,10 +67,15 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
           startIcon={<Icon>save</Icon>}
           onClick={aoClicarEmSalvar}
         >
-          Salvar
+          <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            Salvar
+          </Typography>
         </Button>
       )}
-      {mostrarBotaoSalvarEVoltar && (
+
+      {mostrarBotaoSalvarCarregando && <Skeleton height={60} width={109} />}
+
+      {mostrarBotaoSalvarEVoltar && !mostrarBotaoSalvarEVoltarCarregando && !smDown && !mdDown && (
         <Button
           color="primary"
           disableElevation
@@ -63,10 +83,15 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
           startIcon={<Icon>save</Icon>}
           onClick={aoClicarEmSalvarEVoltar}
         >
-          Salvar e voltar
+          <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            Salvar e voltar
+          </Typography>
         </Button>
       )}
-      {mostrarBotaoApagar && (
+
+      {mostrarBotaoSalvarEVoltarCarregando && !smDown && !mdDown && <Skeleton height={60} width={178} />}
+
+      {mostrarBotaoApagar && !mostrarBotaoApagarCarregando && (
         <Button
           color="primary"
           disableElevation
@@ -74,10 +99,15 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
           startIcon={<Icon>delete</Icon>}
           onClick={aoClicarEmApagar}
         >
-          Apagar
+          <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            Apagar
+          </Typography>
         </Button>
       )}
-      {mostrarBotaoNovo && (
+
+      {mostrarBotaoApagarCarregando && <Skeleton height={60} width={113} />}
+
+      {mostrarBotaoNovo && !mostrarBotaoNovoCarregando && !smDown && (
         <Button
           color="primary"
           disableElevation
@@ -85,23 +115,30 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
           startIcon={<Icon>add</Icon>}
           onClick={aoClicarEmSalvar}
         >
-          {textoBotaoNovo}
+          <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+            {textoBotaoNovo}
+          </Typography>
         </Button>
       )}
 
-      {mostrarBotaoVoltar && (
-        <Box flex={1} display="flex" justifyContent="end">
-          <Button
-            color="primary"
-            disableElevation
-            variant="outlined"
-            startIcon={<Icon>arrow_back</Icon>}
-            onClick={aoClicarEmVoltar}
-          >
+      {mostrarBotaoNovoCarregando && !smDown && <Skeleton height={60} width={96} />}
+
+      {mostrarBotaoVoltar && !mostrarBotaoVoltarCarregando && (
+        <Button
+          style={{ marginLeft: 'auto' }}
+          color="primary"
+          disableElevation
+          variant="outlined"
+          startIcon={<Icon>arrow_back</Icon>}
+          onClick={aoClicarEmVoltar}
+        >
+          <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
             Voltar
-          </Button>
-        </Box>
+          </Typography>
+        </Button>
       )}
+
+      {mostrarBotaoVoltarCarregando && <Skeleton height={60} width={109} />}
     </Box>
   );
 };
