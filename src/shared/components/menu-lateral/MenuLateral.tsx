@@ -13,7 +13,7 @@ import {
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
-import { useDrawerContext } from '../../contexts';
+import { useAppThemeContext, useDrawerContext } from '../../contexts';
 
 interface IMenuLateralProps {
   children: React.ReactNode;
@@ -21,9 +21,10 @@ interface IMenuLateralProps {
 
 export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
+  const { toggleTheme } = useAppThemeContext();
 
   interface IListItemLinkProps {
     to: string;
@@ -62,7 +63,7 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
     <>
       <Drawer
         open={isDrawerOpen}
-        variant={mobile ? 'temporary' : 'permanent'}
+        variant={smDown ? 'temporary' : 'permanent'}
         onClose={toggleDrawerOpen}
       >
         <Box
@@ -94,15 +95,30 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
                   to={drawerOption.path}
                   icon={drawerOption.icon}
                   label={drawerOption.label}
-                  onClick={mobile ? toggleDrawerOpen : undefined}
+                  onClick={smDown ? toggleDrawerOpen : undefined}
                 />
               ))}
             </List>
           </Box>
+
+          <Box>
+            <ListItemButton onClick={toggleTheme}>
+              <ListItemIcon>
+                <Icon>
+                  {theme.palette.mode === 'dark' ? 'dark_mode' : 'light_mode'}
+                </Icon>
+              </ListItemIcon>
+              <ListItemText
+                primary={`Alterar para tema ${
+                  theme.palette.mode === 'dark' ? 'claro' : 'escuro'
+                }`}
+              />
+            </ListItemButton>
+          </Box>
         </Box>
       </Drawer>
 
-      <Box height="100vh" marginLeft={mobile ? 0 : theme.spacing(28)}>
+      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </>
