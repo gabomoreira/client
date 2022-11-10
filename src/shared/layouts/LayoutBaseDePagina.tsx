@@ -18,12 +18,18 @@ export const LayoutBaseDePagina: React.FC<ILayoutBaseDePaginaProps> = ({
   title,
 }) => {
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'));
 
   const { toggleDrawerOpen } = useDrawerContext();
 
   return (
-    <Box height="100%" display="flex" flexDirection="column" gap={1}>
+    <Box
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      gap={smDown ? 6 : mdDown ? 8 : 12}
+    >
       <Box
         padding={1}
         display="flex"
@@ -31,16 +37,25 @@ export const LayoutBaseDePagina: React.FC<ILayoutBaseDePaginaProps> = ({
         gap={1}
         height={theme.spacing(12)}
       >
-        {mobile ? (
+        {smDown ? (
           <IconButton onClick={toggleDrawerOpen}>
             <Icon>menu</Icon>
           </IconButton>
         ) : null}
 
-        <Typography variant="h5">{title}</Typography>
+        <Typography
+          variant={smDown ? 'h5' : mdDown ? 'h4' : 'h3'}
+          whiteSpace="nowrap"
+          overflow="hidden"
+          textOverflow="elipses"
+        >
+          {title}
+        </Typography>
       </Box>
 
-      <Box>{children}</Box>
+      <Box flex={1} overflow="auto">
+        {children}
+      </Box>
 
       <Box>Footer</Box>
     </Box>
