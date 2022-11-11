@@ -17,6 +17,60 @@
       "email": "teste@gmail.com",
       "cidadeId": 1,
       "nomeCompleto": "Teste Testados"
+    },
+    {
+      "id": 4,
+      "email": "ayanokoji@gmail.com",
+      "cidadeId": 2,
+      "nomeCompleto": "Ayanokoji Animes"
+    },
+    {
+      "id": 5,
+      "email": "anya@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Anya Animes"
+    },
+    {
+      "id": 6,
+      "email": "banana@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Bananado Banas"
+    },
+    {
+      "id": 7,
+      "email": "pera@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Perado Pereira"
+    },
+    {
+      "id": 8,
+      "email": "mouse@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Mouse da Mão"
+    },
+    {
+      "id": 9,
+      "email": "garrafa@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Garrafa Vermelha"
+    },
+    {
+      "id": 10,
+      "email": "toalha@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Toalha Gigante"
+    },
+    {
+      "id": 11,
+      "email": "caderno@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Caderno de Ferro"
+    },
+    {
+      "id": 12,
+      "email": "mesa@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "Mesa Branca"
     }
   ],
   "cidades": []
