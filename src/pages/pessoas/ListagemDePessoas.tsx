@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { IListagemPessoa, PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { FerramentasDaListagem } from '../../shared/components';
 import { useDebounce } from '../../shared/hooks';
 import { LayoutBaseDePagina } from '../../shared/layouts';
 import {
+  Icon,
+  IconButton,
   LinearProgress,
   Pagination,
   Paper,
@@ -25,6 +27,7 @@ export const ListagemDePessoas: React.FC = () => {
   const [pessoas, setPessoas] = useState<IListagemPessoa[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const busca = useMemo(() => {
     return searchParams.get('busca') || '';
@@ -52,12 +55,26 @@ export const ListagemDePessoas: React.FC = () => {
     });
   }, [busca, pagina]);
 
+  const handleDelete = (idPessoa: number) => {
+    if (confirm('Deseja realmente apagar essa pessoa?')) {
+      PessoasService.deleteById(idPessoa).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          setPessoas((oldPessoas) => [...oldPessoas.filter((pessoa) => pessoa.id !== idPessoa)]);
+          alert('Pessoa pagada com sucesso');
+        }
+      });
+    }
+  };
+
   return (
     <LayoutBaseDePagina
       title="Listagem de Pessoas"
       barraDeFerramentas={
         <FerramentasDaListagem
           textoBotaoNovo="Nova"
+          aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
           mostrarInputBusca
           textoDaBusca={busca}
           aoMudarTextoDeBusca={(texto) => setSerachParams({ busca: texto, pagina: '1' }, { replace: true })}
@@ -77,7 +94,14 @@ export const ListagemDePessoas: React.FC = () => {
           <TableBody>
             {pessoas?.map((pessoa) => (
               <TableRow key={pessoa.id}>
-                <TableCell>Ações</TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleDelete(pessoa.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                  <IconButton onClick={() => navigate(`/pessoas/detalhe/${pessoa.id}`)}>
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </TableCell>
                 <TableCell>{pessoa.nomeCompleto}</TableCell>
                 <TableCell>{pessoa.email}</TableCell>
               </TableRow>

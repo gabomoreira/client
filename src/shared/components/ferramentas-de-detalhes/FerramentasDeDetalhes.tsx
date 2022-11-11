@@ -113,7 +113,7 @@ export const FerramentasDeDetalhes: React.FC<IFerramentasDeDetalhesProps> = ({
           disableElevation
           variant="outlined"
           startIcon={<Icon>add</Icon>}
-          onClick={aoClicarEmSalvar}
+          onClick={aoClicarEmNovo}
         >
           <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
             {textoBotaoNovo}
