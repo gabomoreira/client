@@ -39,13 +39,53 @@ const getAll = async (page = 1, filter = ''): Promise<TPessoaComTotalCount | Err
   }
 };
 
-const getById = async (): Promise<any> => {};
+const getById = async (pessoaId: number): Promise<IDetalhePessoa | Error> => {
+  try {
+    const { data } = await Api.get(`/pessoas/${pessoaId}`);
 
-const create = async (): Promise<any> => {};
+    if (data) {
+      return data;
+    }
 
-const updateById = async (): Promise<any> => {};
+    return new Error('Erro ao buscar a pessoa.');
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao buscar a pessoa.');
+  }
+};
 
-const deleteById = async (): Promise<any> => {};
+const create = async (inputPessoa: Omit<IDetalhePessoa, 'id'>): Promise<number | Error> => {
+  try {
+    const { data } = await Api.post<IDetalhePessoa>('/pessoas', inputPessoa);
+
+    if (data) {
+      return data.id;
+    }
+
+    return new Error('Error ao criar uma nova pessoa.');
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao criar uma nova pessoa.');
+  }
+};
+
+const updateById = async (pessoaId: number, inputPessoa: IDetalhePessoa): Promise<void | Error> => {
+  try {
+    await Api.put(`/pessoas/${pessoaId}`, inputPessoa);
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao atualizar a pessoa.');
+  }
+};
+
+const deleteById = async (pessoaId: number): Promise<void | Error> => {
+  try {
+    await Api.delete(`/pessoas/${pessoaId}`);
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao excluir a pessoa');
+  }
+};
 
 export const PessoasService = {
   getAll,
