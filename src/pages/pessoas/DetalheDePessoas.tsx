@@ -1,18 +1,18 @@
-import { LinearProgress } from '@mui/material';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
+import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { FerramentasDeDetalhes } from '../../shared/components';
-import { VTextField } from '../../shared/forms/VTextField';
 import { LayoutBaseDePagina } from '../../shared/layouts';
-import { IDetalhePessoa, PessoasService } from '../../shared/services/api/pessoas/PessoasService';
+import { VTextField } from '../../shared/forms/VTextField';
+import { FerramentasDeDetalhes } from '../../shared/components';
+import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 
 interface IFormData {
   nomeCompleto: string;
   email: string;
-  cidadeId: string;
+  cidadeId: number;
 }
 
 export const DetalheDePessoas = () => {
@@ -24,22 +24,44 @@ export const DetalheDePessoas = () => {
   const formRef = useRef<FormHandles>(null);
 
   useEffect(() => {
-    setIsLoading(true);
+    if (id !== 'nova') {
+      setIsLoading(true);
 
-    PessoasService.getById(Number(id)).then((result) => {
-      if (result instanceof Error) {
-        alert(result.message);
-        navigate('/pessoas');
-      } else {
-        setIsLoading(false);
-        setNome(result.nomeCompleto);
-        console.log(result);
-      }
-    });
+      PessoasService.getById(Number(id)).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+          navigate('/pessoas');
+        } else {
+          setIsLoading(false);
+          setNome(result.nomeCompleto);
+          formRef.current?.setData(result);
+        }
+      });
+    }
   }, [id]);
 
   const handleSave = (dados: IFormData) => {
-    console.log(dados);
+    setIsLoading(true);
+
+    if (id === 'nova') {
+      PessoasService.create(dados).then((result) => {
+        setIsLoading(false);
+
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          navigate(`/pessoas/detalhe/${result}`);
+        }
+      });
+    } else {
+      PessoasService.updateById(Number(id), { id: Number(id), ...dados }).then((result) => {
+        setIsLoading(false);
+
+        if (result instanceof Error) {
+          alert(result.message);
+        }
+      });
+    }
   };
 
   const handleDelete = (id: number) => {
@@ -73,12 +95,42 @@ export const DetalheDePessoas = () => {
         />
       }
     >
-      {isLoading && <LinearProgress variant="indeterminate" />}
-
       <Form ref={formRef} onSubmit={(dados) => handleSave(dados)}>
-        <VTextField name="nomeCompleto" />
-        <VTextField name="email" />
-        <VTextField name="cidadeId" />
+        <Box component={Paper} margin={1} display="flex" flexDirection="column" variant="outlined">
+          <Grid container direction="column" padding={2} spacing={2}>
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
+            )}
+
+            <Grid item>
+              <Typography variant="h6">Geral</Typography>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  label="Nome Completo"
+                  name="nomeCompleto"
+                  disabled={isLoading}
+                  onChange={(e) => setNome(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField fullWidth label="Email" name="email" disabled={isLoading} />
+              </Grid>
+            </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField fullWidth label="Cidade" name="cidadeId" disabled={isLoading} />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
       </Form>
     </LayoutBaseDePagina>
   );
