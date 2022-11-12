@@ -1,13 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Form } from '@unform/web';
-import { FormHandles } from '@unform/core';
-import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 
 import { LayoutBaseDePagina } from '../../shared/layouts';
 import { VTextField } from '../../shared/forms/VTextField';
 import { FerramentasDeDetalhes } from '../../shared/components';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
+import { useVForm, VForm } from '../../shared/forms';
 
 interface IFormData {
   nomeCompleto: string;
@@ -19,9 +19,10 @@ export const DetalheDePessoas = () => {
   const { id = 'nova' } = useParams<'id'>();
   const navigate = useNavigate();
 
+  const { formRef, save, saveAndBack, isSaveAndBack } = useVForm();
+
   const [nome, setNome] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const formRef = useRef<FormHandles>(null);
 
   useEffect(() => {
     if (id !== 'nova') {
@@ -37,6 +38,12 @@ export const DetalheDePessoas = () => {
           formRef.current?.setData(result);
         }
       });
+    } else {
+      formRef.current?.setData({
+        nomeCompleto: '',
+        email: '',
+        cidadeId: '',
+      });
     }
   }, [id]);
 
@@ -50,7 +57,11 @@ export const DetalheDePessoas = () => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          navigate(`/pessoas/detalhe/${result}`);
+          if (isSaveAndBack()) {
+            navigate('/pessoas');
+          } else {
+            navigate(`/pessoas/detalhe/${result}`);
+          }
         }
       });
     } else {
@@ -59,6 +70,10 @@ export const DetalheDePessoas = () => {
 
         if (result instanceof Error) {
           alert(result.message);
+        } else {
+          if (isSaveAndBack()) {
+            navigate('/pessoas');
+          }
         }
       });
     }
@@ -87,15 +102,15 @@ export const DetalheDePessoas = () => {
           mostrarBotaoSalvarEVoltar
           mostrarBotaoApagar={id !== 'nova'}
           mostrarBotaoNovo={id !== 'nova'}
-          aoClicarEmSalvar={() => formRef.current?.submitForm()}
-          aoClicarEmSalvarEVoltar={() => formRef.current?.submitForm()}
+          aoClicarEmSalvar={save}
+          aoClicarEmSalvarEVoltar={saveAndBack}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
           aoClicarEmVoltar={() => navigate('/pessoas')}
         />
       }
     >
-      <Form ref={formRef} onSubmit={(dados) => handleSave(dados)}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box component={Paper} margin={1} display="flex" flexDirection="column" variant="outlined">
           <Grid container direction="column" padding={2} spacing={2}>
             {isLoading && (
@@ -131,7 +146,7 @@ export const DetalheDePessoas = () => {
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
     </LayoutBaseDePagina>
   );
 };
