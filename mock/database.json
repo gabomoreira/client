@@ -109,5 +109,14 @@
       "id": 18
     }
   ],
-  "cidades": []
+  "cidades": [
+    {
+      "nome": "Maceió",
+      "id": 1
+    },
+    {
+      "nome": "Penedo",
+      "id": 2
+    }
+  ]
 }

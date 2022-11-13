@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { IListagemPessoa, PessoasService } from '../../shared/services/api/pessoas/PessoasService';
+import { IListagemCidades, CidadesService } from '../../shared/services/api/cidades/CidadesService';
 import { FerramentasDaListagem } from '../../shared/components';
 import { useDebounce } from '../../shared/hooks';
 import { LayoutBaseDePagina } from '../../shared/layouts';
@@ -21,10 +21,10 @@ import {
 } from '@mui/material';
 import { Environment } from '../../shared/environment';
 
-export const ListagemDePessoas: React.FC = () => {
+export const ListagemDeCidades: React.FC = () => {
   const [searchParams, setSerachParams] = useSearchParams();
   const { debounce } = useDebounce();
-  const [pessoas, setPessoas] = useState<IListagemPessoa[]>([]);
+  const [cidades, setCidades] = useState<IListagemCidades[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -41,28 +41,28 @@ export const ListagemDePessoas: React.FC = () => {
     setIsLoading(true);
 
     debounce(() => {
-      PessoasService.getAll(pagina, busca).then((result) => {
+      CidadesService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
 
         if (result instanceof Error) {
           alert(result.message);
         } else {
           console.log(result.data);
-          setPessoas(result.data);
+          setCidades(result.data);
           setTotalCount(result.totalCount);
         }
       });
     });
   }, [busca, pagina]);
 
-  const handleDelete = (idPessoa: number) => {
-    if (confirm('Deseja realmente apagar essa pessoa?')) {
-      PessoasService.deleteById(idPessoa).then((result) => {
+  const handleDelete = (idCidade: number) => {
+    if (confirm('Deseja realmente apagar essa cidade?')) {
+      CidadesService.deleteById(idCidade).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          setPessoas((oldPessoas) => [...oldPessoas.filter((pessoa) => pessoa.id !== idPessoa)]);
-          alert('Pessoa pagada com sucesso');
+          setCidades((oldCidades) => [...oldCidades.filter((cidade) => cidade.id !== idCidade)]);
+          alert('Cidade pagada com sucesso');
         }
       });
     }
@@ -70,11 +70,11 @@ export const ListagemDePessoas: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      title="Listagem de Pessoas"
+      title="Listagem de Cidades"
       barraDeFerramentas={
         <FerramentasDaListagem
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
+          aoClicarEmNovo={() => navigate('/cidades/detalhe/nova')}
           mostrarInputBusca
           textoDaBusca={busca}
           aoMudarTextoDeBusca={(texto) => setSerachParams({ busca: texto, pagina: '1' }, { replace: true })}
@@ -86,24 +86,22 @@ export const ListagemDePessoas: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell width={100}>Ações</TableCell>
-              <TableCell>Nome Completo</TableCell>
-              <TableCell>Email</TableCell>
+              <TableCell>Nome</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {pessoas?.map((pessoa) => (
-              <TableRow key={pessoa.id}>
+            {cidades?.map((cidade) => (
+              <TableRow key={cidade.id}>
                 <TableCell>
-                  <IconButton onClick={() => handleDelete(pessoa.id)}>
+                  <IconButton onClick={() => handleDelete(cidade.id)}>
                     <Icon>delete</Icon>
                   </IconButton>
-                  <IconButton onClick={() => navigate(`/pessoas/detalhe/${pessoa.id}`)}>
+                  <IconButton onClick={() => navigate(`/cidades/detalhe/${cidade.id}`)}>
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{pessoa.nomeCompleto}</TableCell>
-                <TableCell>{pessoa.email}</TableCell>
+                <TableCell>{cidade.nome}</TableCell>
               </TableRow>
             ))}
           </TableBody>
