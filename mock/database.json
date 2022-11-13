@@ -1,16 +1,10 @@
 {
   "pessoas": [
     {
-      "id": 1,
-      "nomeCompleto": "Gabo Update 9",
-      "email": "gabo@gmail.com",
-      "cidadeId": "9"
-    },
-    {
       "id": 2,
       "nomeCompleto": "Sakuta dos Animes 2",
       "email": "sakuta@gmail.com",
-      "cidadeId": 1
+      "cidadeId": 2
     },
     {
       "id": 3,
@@ -71,42 +65,6 @@
       "email": "mesa@gmail.com",
       "cidadeId": 1,
       "nomeCompleto": "Mesa Branca"
-    },
-    {
-      "nomeCompleto": "papagaio",
-      "email": "paapgaio@gmail.com",
-      "cidadeId": "8",
-      "id": 13
-    },
-    {
-      "nomeCompleto": "Queijo",
-      "email": "quijo@gmail.com",
-      "cidadeId": "9",
-      "id": 14
-    },
-    {
-      "nomeCompleto": "Mortadela",
-      "email": "mortadela@gmail.com",
-      "cidadeId": "9",
-      "id": 15
-    },
-    {
-      "id": 16,
-      "nomeCompleto": "Batata 9",
-      "email": "bataa@gmail.com",
-      "cidadeId": "9"
-    },
-    {
-      "nomeCompleto": "banho",
-      "email": "banho@gmail.com",
-      "cidadeId": "9",
-      "id": 17
-    },
-    {
-      "nomeCompleto": "Comer",
-      "email": "comer@gmail.com",
-      "cidadeId": "9",
-      "id": 18
     }
   ],
   "cidades": [
@@ -115,8 +73,24 @@
       "id": 1
     },
     {
-      "nome": "Penedo",
-      "id": 2
+      "id": 2,
+      "nome": "Penedo Updated"
+    },
+    {
+      "nome": "Olinda",
+      "id": 3
+    },
+    {
+      "nome": "Pernambuco",
+      "id": 4
+    },
+    {
+      "nome": "Bahia",
+      "id": 5
+    },
+    {
+      "nome": "Aracaju",
+      "id": 6
     }
   ]
 }

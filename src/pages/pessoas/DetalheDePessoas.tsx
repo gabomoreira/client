@@ -8,6 +8,7 @@ import { VTextField } from '../../shared/forms/VTextField';
 import { FerramentasDeDetalhes } from '../../shared/components';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { useVForm, VForm } from '../../shared/forms';
+import { AutoCompleteCidade } from '../cidades/components/AutoCompleteCidade';
 
 interface IFormData {
   nomeCompleto: string;
@@ -48,7 +49,7 @@ export const DetalheDePessoas = () => {
       formRef.current?.setData({
         nomeCompleto: '',
         email: '',
-        cidadeId: '',
+        cidadeId: undefined,
       });
     }
   }, [id]);
@@ -162,7 +163,7 @@ export const DetalheDePessoas = () => {
             </Grid>
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField fullWidth label="Cidade" name="cidadeId" disabled={isLoading} />
+                <AutoCompleteCidade isExternalLoading={isLoading} />
               </Grid>
             </Grid>
           </Grid>
