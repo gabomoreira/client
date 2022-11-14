@@ -9,7 +9,7 @@ const auth = async (email: string, password: string): Promise<IAuth | Error> => 
     const { data } = await Api.get('/auth', { data: { email, password } });
 
     if (data) {
-      return data.id;
+      return data;
     }
 
     return new Error('Erro ao autenticar');
